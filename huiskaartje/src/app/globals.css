@@ -1,0 +1,37 @@
+@import "tailwindcss";
+@import "@fontsource-variable/fraunces/opsz.css";
+@import "@fontsource-variable/fraunces/opsz-italic.css";
+
+@theme {
+  --font-sans: "Fraunces Variable", Fraunces, Georgia, serif;
+  --color-inkt: #141414;
+  --color-grijs: #6f6f6f;
+  --color-lijn: #e4e2dd;
+  --color-papier: #ffffff;
+  --color-veld: #f6f5f2;
+}
+
+html {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-papier);
+  color: var(--color-inkt);
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  font-feature-settings: "kern", "liga";
+  line-height: 1.5;
+}
+
+h1, h2, h3 {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.print-voorbeeld svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}

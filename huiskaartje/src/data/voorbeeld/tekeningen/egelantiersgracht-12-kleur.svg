@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 0 88 136">
+<!-- Voorbeeldgevel, verzonnen. Niet gebaseerd op het echte pand. -->
+<g stroke="#2a2420" stroke-width="0.5" stroke-linejoin="round" stroke-linecap="round">
+<rect x="0" y="38" width="76" height="96" fill="#4e6552" />
+<polygon points="0,38 76,38" fill="#4e6552"/>
+<path d="M 0 38 C 3.8 20.9, 20.32 19, 24.32 8 L 51.68 8 C 55.68 19, 72.2 20.9, 76 38 Z" fill="#4e6552"/>
+<path d="M 22.32 8 q 15.68 -12 31.36 0 z" fill="#e9dfcc"/>
+<line x1="0" y1="38" x2="76" y2="38" stroke-width="0.6"/>
+<rect x="31.8" y="15.9" width="12.4" height="14.4" fill="#fbf8f1" />
+<rect x="33" y="17.1" width="10" height="12" fill="#c6d3d6" />
+<line x1="38" y1="17.1" x2="38" y2="29.1" stroke-width="0.7"/>
+<line x1="33" y1="22.14" x2="43" y2="22.14" stroke-width="0.7"/>
+<rect x="10.8" y="72.8" width="16.4" height="22.4" fill="#fbf8f1" />
+<rect x="12" y="74" width="14" height="20" fill="#c6d3d6" />
+<line x1="19" y1="74" x2="19" y2="94" stroke-width="0.7"/>
+<line x1="12" y1="82.4" x2="26" y2="82.4" stroke-width="0.7"/>
+<rect x="48.8" y="72.8" width="16.4" height="22.4" fill="#fbf8f1" />
+<rect x="50" y="74" width="14" height="20" fill="#c6d3d6" />
+<line x1="57" y1="74" x2="57" y2="94" stroke-width="0.7"/>
+<line x1="50" y1="82.4" x2="64" y2="82.4" stroke-width="0.7"/>
+<rect x="10.8" y="42.8" width="16.4" height="22.4" fill="#fbf8f1" />
+<rect x="12" y="44" width="14" height="20" fill="#c6d3d6" />
+<line x1="19" y1="44" x2="19" y2="64" stroke-width="0.7"/>
+<line x1="12" y1="52.4" x2="26" y2="52.4" stroke-width="0.7"/>
+<rect x="48.8" y="42.8" width="16.4" height="22.4" fill="#fbf8f1" />
+<rect x="50" y="44" width="14" height="20" fill="#c6d3d6" />
+<line x1="57" y1="44" x2="57" y2="64" stroke-width="0.7"/>
+<line x1="50" y1="52.4" x2="64" y2="52.4" stroke-width="0.7"/>
+<rect x="10.8" y="104.8" width="16.4" height="24.4" fill="#fbf8f1" />
+<rect x="12" y="106" width="14" height="22" fill="#c6d3d6" />
+<line x1="19" y1="106" x2="19" y2="128" stroke-width="0.7"/>
+<line x1="12" y1="115.24" x2="26" y2="115.24" stroke-width="0.7"/>
+<rect x="49.3" y="104.8" width="15.4" height="29.2" fill="#fbf8f1" />
+<rect x="50.5" y="106" width="13" height="6.16" fill="#c6d3d6" />
+<line x1="57" y1="106" x2="57" y2="112.16" stroke-width="0.7"/>
+<rect x="50.5" y="113.16" width="13" height="20.84" fill="#24382d" />
+<line x1="57" y1="113.16" x2="57" y2="134" stroke-width="0.7"/>
+<circle cx="58.56" cy="123.36" r="0.9" fill="#fbf8f1"/>
+<line x1="-4" y1="134" x2="80" y2="134" stroke-width="1.2"/>
+</g>
+</svg>
