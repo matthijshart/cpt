@@ -93,6 +93,23 @@ function tokens(s: string): string[] {
     .filter(Boolean);
 }
 
+function pastBijAdres(termen: string[], d: PdokDoc): boolean {
+  const straat = tokens(d.straatnaam);
+  const nummer = `${d.huisnummer}${d.huisletter ?? ""}`.toLowerCase();
+  const toevoeging = (d.huisnummertoevoeging ?? "").toLowerCase();
+  const postcode = (d.postcode ?? "").toLowerCase();
+  let nummerGezien = false;
+  return termen.every((t) => {
+    if (straat.some((w) => w.startsWith(t))) return true;
+    if (!nummerGezien && nummer.startsWith(t)) {
+      nummerGezien = true;
+      return true;
+    }
+    if (nummerGezien && toevoeging && toevoeging.startsWith(t)) return true;
+    return t.length >= 4 && postcode.startsWith(t);
+  });
+}
+
 export function postcodeWeergave(p: string | null): string {
   return p ? `${p.slice(0, 4)} ${p.slice(4)}` : "";
 }
@@ -110,10 +127,10 @@ export async function zoekAdressen(q: string, max = 6): Promise<AdresSuggestie[]
   const gezien = new Map<string, AdresSuggestie>();
   const termen = tokens(schoon);
   for (const d of docs) {
-    // PDOK matcht op elk los woord ("qqq 999" vindt alles met 999). Wij eisen dat
-    // elk getypt woord het begin is van een woord in het adres.
-    const woorden = tokens(d.weergavenaam);
-    if (!termen.every((t) => woorden.some((w) => w.startsWith(t)))) continue;
+    // PDOK matcht op elk los woord ("qqq 999" vindt alles met 999). Wij eisen dat elk
+    // getypt woord past: op de straatnaam, op het huisnummer (één keer), daarna op de
+    // toevoeging, of op de postcode als er minstens vier tekens van getypt zijn.
+    if (!pastBijAdres(termen, d)) continue;
     const a = naarAdres(d);
     const slug = pandSlugVoor(a);
     if (gezien.has(slug)) continue;

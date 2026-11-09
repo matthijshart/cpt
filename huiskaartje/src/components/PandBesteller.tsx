@@ -43,16 +43,18 @@ export function PandBesteller({ slug, straat, huisnummer, tekeningen }: PandBest
           </h1>
         </div>
 
-        <fieldset>
-          <legend className="text-sm text-grijs mb-2">{teksten.pand.design}</legend>
-          <div className="grid grid-cols-2 gap-2">
-            {beschikbaar.map((d) => (
-              <Keuze key={d} actief={design === d} onClick={() => setDesign(d)}>
-                {teksten.pand.designNaam[d]}
-              </Keuze>
-            ))}
-          </div>
-        </fieldset>
+        {beschikbaar.length > 1 && (
+          <fieldset>
+            <legend className="text-sm text-grijs mb-2">{teksten.pand.design}</legend>
+            <div className="grid grid-cols-2 gap-2">
+              {beschikbaar.map((d) => (
+                <Keuze key={d} actief={design === d} onClick={() => setDesign(d)}>
+                  {teksten.pand.designNaam[d]}
+                </Keuze>
+              ))}
+            </div>
+          </fieldset>
+        )}
 
         <fieldset>
           <legend className="text-sm text-grijs mb-2">{teksten.pand.formaat}</legend>
