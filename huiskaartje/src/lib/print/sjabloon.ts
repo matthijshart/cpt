@@ -11,10 +11,14 @@
  */
 import type { Formaat } from "../config";
 
+/** De tekening zoals het sjabloon hem krijgt: SVG-tekst of een afbeelding op een url. */
+export type TekeningBron =
+  | { soort: "svg"; svg: string }
+  | { soort: "afbeelding"; url: string; breedtePx: number; hoogtePx: number };
+
 export interface PrintInvoer {
   formaat: Pick<Formaat, "breedteMm" | "hoogteMm">;
-  /** Het SVG-bestand van de tekening, als tekst. Moet een viewBox hebben. */
-  tekeningSvg: string;
+  tekening: TekeningBron;
   straat: string;
   huisnummer: string;
   stad: string;
@@ -36,7 +40,7 @@ export function ontleedSvg(svg: string): { viewBox: string; inhoud: string } {
   return { viewBox, inhoud };
 }
 
-export const PRINT_PAPIER = "#f5f2ec";
+export const PRINT_PAPIER = "#faf2e8";
 
 export function maakPrintSvg(i: PrintInvoer): string {
   const W = i.formaat.breedteMm;
@@ -56,9 +60,15 @@ export function maakPrintSvg(i: PrintInvoer): string {
   const y1 = y2 - W * 0.055;
   const grond = y1 - maat1 * 1.6;
 
-  const tek = ontleedSvg(i.tekeningSvg);
   const tekH = grond - bovenMarge;
   const tekW = W - 2 * zijMarge;
+  let tekening: string;
+  if (i.tekening.soort === "svg") {
+    const tek = ontleedSvg(i.tekening.svg);
+    tekening = `<svg x="${n(zijMarge)}" y="${n(bovenMarge)}" width="${n(tekW)}" height="${n(tekH)}" viewBox="${tek.viewBox}" preserveAspectRatio="xMidYMax meet">${tek.inhoud}</svg>`;
+  } else {
+    tekening = `<image x="${n(zijMarge)}" y="${n(bovenMarge)}" width="${n(tekW)}" height="${n(tekH)}" href="${escapeXml(i.tekening.url)}" preserveAspectRatio="xMidYMax meet"/>`;
+  }
 
   const regel1 = escapeXml(`${i.straat} ${i.huisnummer}`.toUpperCase());
   const regel2 = escapeXml(i.stad.toUpperCase());
@@ -87,7 +97,7 @@ export function maakPrintSvg(i: PrintInvoer): string {
   return [
     `<svg xmlns="http://www.w3.org/2000/svg" width="${W}mm" height="${H}mm" viewBox="0 0 ${W} ${H}" font-family="${PRINT_LETTERTYPE}" fill="#141414">`,
     `<rect width="${W}" height="${H}" fill="${PRINT_PAPIER}"/>`,
-    `<svg x="${n(zijMarge)}" y="${n(bovenMarge)}" width="${n(tekW)}" height="${n(tekH)}" viewBox="${tek.viewBox}" preserveAspectRatio="xMidYMax meet">${tek.inhoud}</svg>`,
+    tekening,
     ...regels,
     `</svg>`,
   ].join("\n");

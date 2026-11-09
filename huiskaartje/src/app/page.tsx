@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AdresZoeker } from "@/components/AdresZoeker";
 import { PrintVoorbeeld } from "@/components/PrintVoorbeeld";
-import { haalVoorbeelden, leesTekening } from "@/lib/catalogus";
+import { haalVoorbeelden, tekeningBron } from "@/lib/catalogus";
 import { FORMATEN, type Design } from "@/lib/config";
 import { teksten } from "@/lib/teksten";
 
@@ -13,8 +13,8 @@ export default async function Home() {
   const prints = await Promise.all(
     voorbeelden.map(async (v, i) => {
       const design = v.tekeningen[designs[i]] ? designs[i] : (Object.keys(v.tekeningen)[0] as Design);
-      const svg = await leesTekening(v.tekeningen[design]!);
-      return { pand: v.pand, svg };
+      const tekening = await tekeningBron(v.tekeningen[design]!);
+      return { pand: v.pand, tekening };
     }),
   );
 
@@ -27,11 +27,11 @@ export default async function Home() {
       {prints.length > 0 && (
         <section className="mt-16 sm:mt-24" aria-label={teksten.home.voorbeelden}>
           <ul className="grid grid-cols-3 gap-3 sm:gap-6">
-            {prints.map(({ pand, svg }) => (
+            {prints.map(({ pand, tekening }) => (
               <li key={pand.slug}>
                 <Link href={`/pand/${pand.slug}`} className="block">
                   <PrintVoorbeeld
-                    invoer={{ formaat: FORMATEN[1], tekeningSvg: svg, straat: pand.straat, huisnummer: pand.huisnummerWeergave, stad: teksten.print.stad }}
+                    invoer={{ formaat: FORMATEN[1], tekening, straat: pand.straat, huisnummer: pand.huisnummerWeergave, stad: teksten.print.stad }}
                   />
                 </Link>
               </li>

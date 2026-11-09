@@ -47,8 +47,15 @@ export interface Tekening {
   pandSlug: string;
   design: Design;
   versie: number;
-  /** Pad naar het vectorbestand, relatief aan de bestandsopslag. */
+  /** svg: vector met viewBox. afbeelding: webp, png of jpeg. */
+  soort: "svg" | "afbeelding";
+  /** Mediatype van het bestand, bijvoorbeeld image/svg+xml of image/webp. */
+  mime: string;
+  /** Pad relatief aan de bestandsopslag. */
   bestand: string;
+  /** Pixelmaat van een afbeelding; bij svg null. */
+  breedtePx: number | null;
+  hoogtePx: number | null;
 }
 
 /** Wat de pandpagina nodig heeft: het pand plus de tekeningen per design. */

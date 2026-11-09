@@ -5,13 +5,14 @@ import Link from "next/link";
 import { DESIGNS, EIGEN_REGEL_MAX, FORMATEN, STANDAARD_DESIGN, STANDAARD_FORMAAT, formatteerPrijs, vindFormaat, type Design, type FormaatCode } from "@/lib/config";
 import { teksten } from "@/lib/teksten";
 import { PrintVoorbeeld } from "./PrintVoorbeeld";
+import type { TekeningBron } from "@/lib/print/sjabloon";
 
 export interface PandBestellerProps {
   slug: string;
   straat: string;
   huisnummer: string;
-  /** SVG-tekst per design. Een design zonder tekening ontbreekt. */
-  tekeningen: Partial<Record<Design, string>>;
+  /** Tekening per design. Een design zonder tekening ontbreekt. */
+  tekeningen: Partial<Record<Design, TekeningBron>>;
 }
 
 export function PandBesteller({ slug, straat, huisnummer, tekeningen }: PandBestellerProps) {
@@ -20,16 +21,16 @@ export function PandBesteller({ slug, straat, huisnummer, tekeningen }: PandBest
   const [formaatCode, setFormaatCode] = useState<FormaatCode>(STANDAARD_FORMAAT);
   const [eigenRegel, setEigenRegel] = useState("");
   const formaat = vindFormaat(formaatCode) ?? FORMATEN[0];
-  const svg = tekeningen[design];
+  const tekening = tekeningen[design];
 
   const bestelUrl = `/afrekenen?${new URLSearchParams({ pand: slug, design, formaat: formaatCode, regel: eigenRegel })}`;
 
   return (
     <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:gap-14 md:items-start">
       <div className="md:sticky md:top-6">
-        {svg && (
+        {tekening && (
           <PrintVoorbeeld
-            invoer={{ formaat, tekeningSvg: svg, straat, huisnummer, stad: teksten.print.stad, eigenRegel }}
+            invoer={{ formaat, tekening, straat, huisnummer, stad: teksten.print.stad, eigenRegel }}
             className="mx-auto max-w-[26rem] md:max-w-[calc(84vh*0.72)]"
           />
         )}

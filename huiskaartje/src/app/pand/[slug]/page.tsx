@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PandBesteller } from "@/components/PandBesteller";
-import { haalPand, leesTekening } from "@/lib/catalogus";
+import { haalPand, tekeningBron } from "@/lib/catalogus";
+import type { TekeningBron } from "@/lib/print/sjabloon";
 import { DESIGNS, type Design } from "@/lib/config";
 import { teksten } from "@/lib/teksten";
 
@@ -37,15 +38,15 @@ export default async function PandPagina({ params }: Props) {
     );
   }
 
-  const svgs: Partial<Record<Design, string>> = {};
+  const bronnen: Partial<Record<Design, TekeningBron>> = {};
   for (const d of DESIGNS) {
     const t = tekeningen[d];
-    if (t) svgs[d] = await leesTekening(t);
+    if (t) bronnen[d] = await tekeningBron(t);
   }
 
   return (
     <div className="mx-auto max-w-5xl pt-4 sm:pt-8">
-      <PandBesteller slug={pand.slug} straat={pand.straat} huisnummer={pand.huisnummerWeergave} tekeningen={svgs} />
+      <PandBesteller slug={pand.slug} straat={pand.straat} huisnummer={pand.huisnummerWeergave} tekeningen={bronnen} />
       <dl className="mt-10 text-sm text-grijs flex flex-wrap gap-x-8 gap-y-1">
         {pand.bouwjaar && (
           <div>

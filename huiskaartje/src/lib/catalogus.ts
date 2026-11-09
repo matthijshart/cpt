@@ -7,7 +7,10 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { DESIGNS, type Design } from "./config";
+import { leesBestand } from "./opslag";
+import type { TekeningBron } from "./print/sjabloon";
 import type { Adres, Pand, PandMetTekeningen, Tekening } from "./types";
+import { panden as echtePanden, adressen as echteAdressen, tekeningen as echteTekeningen } from "@/data/panden";
 
 /**
  * Voorbeelddata alleen lokaal: nooit op Vercel, nooit in een productiebuild,
@@ -23,23 +26,32 @@ interface Bron {
   panden: Pand[];
   adressen: Adres[];
   tekeningen: Tekening[];
-  leesSvg(tekening: Tekening): Promise<string>;
 }
 
+/** Echte panden (src/data/panden.ts) plus, alleen lokaal, de voorbeeldpanden. */
 async function laadBron(): Promise<Bron> {
-  if (!voorbeeldDataActief()) {
-    return { panden: [], adressen: [], tekeningen: [], leesSvg: async () => "" };
-  }
+  const bron: Bron = { panden: [...echtePanden], adressen: [...echteAdressen], tekeningen: [...echteTekeningen] };
+  if (!voorbeeldDataActief()) return bron;
   const { voorbeeldPanden, voorbeeldAdressen, voorbeeldGevels } = await import("@/data/voorbeeld/panden");
-  const tekeningen: Tekening[] = voorbeeldGevels.flatMap((g) =>
-    DESIGNS.map((design) => ({ pandSlug: g.slug, design, versie: 1, bestand: `voorbeeld/${g.slug}-${design}.svg` })),
-  );
-  return {
-    panden: voorbeeldPanden,
-    adressen: voorbeeldAdressen,
-    tekeningen,
-    leesSvg: (t) => readFile(join(process.cwd(), "src/data/voorbeeld/tekeningen", t.bestand.replace(/^voorbeeld\//, "")), "utf8"),
-  };
+  const echteSlugs = new Set(bron.panden.map((p) => p.slug));
+  bron.panden.push(...voorbeeldPanden.filter((p) => !echteSlugs.has(p.slug)));
+  bron.adressen.push(...voorbeeldAdressen.filter((a) => !echteSlugs.has(a.pandSlug)));
+  for (const g of voorbeeldGevels) {
+    if (echteSlugs.has(g.slug)) continue;
+    for (const design of DESIGNS) {
+      bron.tekeningen.push({
+        pandSlug: g.slug,
+        design,
+        versie: 1,
+        soort: "svg",
+        mime: "image/svg+xml",
+        bestand: `voorbeeld/${g.slug}-${design}.svg`,
+        breedtePx: null,
+        hoogtePx: null,
+      });
+    }
+  }
+  return bron;
 }
 
 function zichtbaar(p: Pand): boolean {
@@ -91,8 +103,21 @@ export async function haalVoorbeelden(aantal: number): Promise<PandMetTekeningen
   return uit;
 }
 
-/** De SVG van een tekening als tekst. */
-export async function leesTekening(t: Tekening): Promise<string> {
-  const bron = await laadBron();
-  return bron.leesSvg(t);
+/** De bytes van een tekening. Voorbeeldgevels komen uit src/data, de rest uit de opslag. */
+export async function leesTekening(t: Tekening): Promise<Buffer> {
+  if (t.bestand.startsWith("voorbeeld/")) {
+    return readFile(join(process.cwd(), "src/data/voorbeeld/tekeningen", t.bestand.slice("voorbeeld/".length)));
+  }
+  return leesBestand(t.bestand);
+}
+
+/** Wat het sjabloon nodig heeft: SVG-tekst, of een url naar de afbeelding. */
+export async function tekeningBron(t: Tekening): Promise<TekeningBron> {
+  if (t.soort === "svg") return { soort: "svg", svg: (await leesTekening(t)).toString("utf8") };
+  return {
+    soort: "afbeelding",
+    url: `/tekening/${t.pandSlug}/${t.design}?v=${t.versie}`,
+    breedtePx: t.breedtePx ?? 1000,
+    hoogtePx: t.hoogtePx ?? 1000,
+  };
 }
