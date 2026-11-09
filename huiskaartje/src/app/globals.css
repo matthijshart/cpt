@@ -4,11 +4,40 @@
 
 @theme {
   --font-sans: "Fraunces Variable", Fraunces, Georgia, serif;
-  --color-inkt: #141414;
-  --color-grijs: #6f6f6f;
-  --color-lijn: #e4e2dd;
-  --color-papier: #ffffff;
-  --color-veld: #f6f5f2;
+  --color-inkt: #1b1916;
+  --color-grijs: #7c766c;
+  --color-lijn: #e2ddd3;
+  --color-papier: #fcfbf8;
+  --color-wand: #f3efe7;
+  --color-veld: #ffffff;
+}
+
+/* Kleine kapitalen met letterspatiëring, zoals het onderschrift op de print. */
+@utility label {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-grijs);
+}
+
+/* Een print in een dunne zwarte lijst. */
+@utility lijst {
+  border: 3px solid var(--color-inkt);
+  background: #fff;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.04),
+    0 24px 48px -28px rgba(27, 25, 22, 0.45);
+  @media (min-width: 640px) {
+    border-width: 4px;
+  }
+}
+
+@utility scrollbalk-weg {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 html {
@@ -26,12 +55,22 @@ body {
 }
 
 h1, h2, h3 {
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+
+.display {
+  font-variation-settings: "SOFT" 60, "WONK" 1;
 }
 
 .print-voorbeeld svg {
   display: block;
   width: 100%;
   height: auto;
+}
+
+::selection {
+  background: var(--color-inkt);
+  color: #fff;
 }

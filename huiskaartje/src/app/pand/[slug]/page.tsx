@@ -45,9 +45,9 @@ export default async function PandPagina({ params }: Props) {
   }
 
   return (
-    <div className="mx-auto max-w-5xl pt-4 sm:pt-8">
+    <div className="mx-auto max-w-6xl pt-6 sm:pt-12">
       <PandBesteller slug={pand.slug} straat={pand.straat} huisnummer={pand.huisnummerWeergave} tekeningen={bronnen} />
-      <dl className="mt-10 text-sm text-grijs flex flex-wrap gap-x-8 gap-y-1">
+      <dl className="mt-10 label flex flex-wrap gap-x-8 gap-y-2 normal-case tracking-normal text-sm">
         {pand.bouwjaar && (
           <div>
             <dt className="inline">{teksten.pand.bouwjaar} </dt>

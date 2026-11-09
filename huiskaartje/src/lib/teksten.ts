@@ -7,8 +7,11 @@ export const teksten = {
     omschrijving: "Een print van je huis in Amsterdam.",
   },
   home: {
-    kop: "Je huis als print.",
-    uitleg: "Typ je adres in Amsterdam.",
+    kop1: "Je huis,",
+    kop2: "als print.",
+    uitleg: "Typ je adres. Kies een formaat. Klaar.",
+    vanaf: "Vanaf",
+    verzending: "verzending inbegrepen",
     placeholder: "Straat en huisnummer",
     zoeken: "Zoek",
     geenResultaten: "Geen adres gevonden in Amsterdam.",

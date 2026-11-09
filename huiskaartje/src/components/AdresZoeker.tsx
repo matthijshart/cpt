@@ -87,7 +87,7 @@ export function AdresZoeker({ autoFocus = false }: { autoFocus?: boolean }) {
       <label htmlFor={`${id}-veld`} className="sr-only">
         {teksten.home.placeholder}
       </label>
-      <div className="flex items-stretch border-b-2 border-inkt focus-within:border-inkt">
+      <div className="flex items-stretch bg-veld border border-inkt h-14 sm:h-16 shadow-[0_18px_40px_-28px_rgba(27,25,22,0.5)] focus-within:ring-1 focus-within:ring-inkt">
         <input
           id={`${id}-veld`}
           type="text"
@@ -107,10 +107,14 @@ export function AdresZoeker({ autoFocus = false }: { autoFocus?: boolean }) {
           aria-expanded={toonLijst && suggesties.length > 0}
           aria-controls={lijstId}
           aria-activedescendant={actief >= 0 ? `${lijstId}-${actief}` : undefined}
-          className="w-full bg-transparent py-3 text-2xl sm:text-3xl placeholder:text-grijs/60 outline-none"
+          className="min-w-0 flex-1 bg-transparent px-4 sm:px-5 text-lg sm:text-xl placeholder:text-grijs/70 outline-none"
         />
-        <button type="submit" className="pl-3 text-base text-grijs hover:text-inkt" aria-label={teksten.home.zoeken}>
-          {onderweg || bezig ? "…" : "→"}
+        <button
+          type="submit"
+          className="label !text-white bg-inkt px-5 sm:px-7 hover:bg-black transition-colors"
+          aria-label={teksten.home.zoeken}
+        >
+          {onderweg || bezig ? "…" : teksten.home.zoeken}
         </button>
       </div>
 
@@ -118,7 +122,7 @@ export function AdresZoeker({ autoFocus = false }: { autoFocus?: boolean }) {
         <ul
           id={lijstId}
           role="listbox"
-          className="absolute left-0 right-0 z-10 mt-1 bg-white border border-lijn shadow-[0_12px_32px_-12px_rgba(0,0,0,0.25)]"
+          className="absolute left-0 right-0 z-10 mt-2 bg-white border border-inkt text-left shadow-[0_24px_48px_-24px_rgba(27,25,22,0.45)]"
         >
           {suggesties.map((s, i) => (
             <li
@@ -131,13 +135,13 @@ export function AdresZoeker({ autoFocus = false }: { autoFocus?: boolean }) {
                 kies(s);
               }}
               onMouseEnter={() => setActief(i)}
-              className={`px-4 py-3 cursor-pointer flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-x-3 ${i === actief ? "bg-veld" : ""}`}
+              className={`px-4 sm:px-5 py-3 cursor-pointer flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-x-4 border-b border-lijn last:border-b-0 ${i === actief ? "bg-wand" : ""}`}
             >
               <span className="text-lg">{s.regel1}</span>
-              <span className="text-sm text-grijs whitespace-nowrap">{s.regel2}</span>
+              <span className="label whitespace-nowrap">{s.regel2}</span>
             </li>
           ))}
-          {geenResultaat && <li className="px-4 py-3 text-grijs">{teksten.home.geenResultaten}</li>}
+          {geenResultaat && <li className="px-4 sm:px-5 py-3 text-grijs">{teksten.home.geenResultaten}</li>}
         </ul>
       )}
     </form>

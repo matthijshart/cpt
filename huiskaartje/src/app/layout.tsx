@@ -26,20 +26,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="nl" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
-        <header className="px-4 pt-5 pb-2 sm:px-8">
-          <Link href="/" className="text-lg font-medium tracking-tight">
-            {teksten.site.naam}
-          </Link>
+        <header className="px-4 sm:px-8">
+          <div className="mx-auto max-w-6xl flex items-baseline justify-between py-5 border-b border-lijn">
+            <Link href="/" className="text-xl tracking-tight">
+              {teksten.site.naam}
+            </Link>
+            <span className="label">{teksten.print.stad}</span>
+          </div>
         </header>
         <main className="flex-1 px-4 sm:px-8">{children}</main>
-        <footer className="px-4 sm:px-8 py-8 mt-16 text-sm text-grijs">
-          <nav className="flex flex-wrap gap-x-5 gap-y-2">
-            {voetLinks.map(([href, naam]) => (
-              <Link key={href} href={href} className="hover:text-inkt">
-                {naam}
-              </Link>
-            ))}
-          </nav>
+        <footer className="px-4 sm:px-8 mt-24">
+          <div className="mx-auto max-w-6xl border-t border-lijn py-8 flex flex-col gap-4 sm:flex-row sm:items-baseline sm:justify-between">
+            <nav className="flex flex-wrap gap-x-6 gap-y-3">
+              {voetLinks.map(([href, naam]) => (
+                <Link key={href} href={href} className="label hover:text-inkt">
+                  {naam}
+                </Link>
+              ))}
+            </nav>
+            <span className="label">{teksten.site.naam}</span>
+          </div>
         </footer>
       </body>
     </html>
