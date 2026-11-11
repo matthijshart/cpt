@@ -63,3 +63,40 @@ export interface PandMetTekeningen {
   pand: Pand;
   tekeningen: Partial<Record<Design, Tekening>>;
 }
+
+/**
+ * Status van een bestelling. Verandert alleen door de webhook van de betaaldienst
+ * (nieuw naar betaald, mislukt of geannuleerd) en daarna door het beheer.
+ */
+export type BestelStatus = "nieuw" | "betaald" | "mislukt" | "geannuleerd" | "in_productie" | "verzonden";
+
+export interface Bezorgadres {
+  naam: string;
+  straat: string;
+  huisnummer: string;
+  postcode: string;
+  plaats: string;
+  land: "NL";
+}
+
+export interface Bestelling {
+  id: string;
+  /** Leesbaar nummer voor de klant, bijvoorbeeld HK-240113. */
+  nummer: string;
+  aangemaakt: string;
+  pandSlug: string;
+  straat: string;
+  huisnummerWeergave: string;
+  design: Design;
+  formaat: string;
+  eigenRegel: string;
+  prijsCent: number;
+  klant: { naam: string; email: string };
+  bezorgadres: Bezorgadres;
+  cadeau: { isCadeau: boolean; kaartjeTekst: string; geenFactuur: boolean };
+  betaalwijze: string;
+  betalingId: string | null;
+  status: BestelStatus;
+  /** QR-code waarmee de klant binnenkwam, als die er was. */
+  herkomst: string | null;
+}
